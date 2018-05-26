@@ -49,6 +49,7 @@ defmodule Fw.MixProject do
       {:shoehorn, "~> 0.2"},      
       {:nerves_runtime, "~> 0.4"},
       {:nerves_network, "~> 0.3"},
+      {:ring_logger, "~> 0.4"},
       {:nerves_init_gadget, "~> 0.4.0"},
       {:ui, path: "../ui"}
     ] ++ system(target)

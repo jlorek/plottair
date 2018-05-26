@@ -12,13 +12,18 @@ config :nerves, :firmware, rootfs_overlay: "rootfs_overlay"
 config :logger, level: :debug
 
 # Allows for tailing of logs.
+# Add the RingLogger backend. This removes the
+# default :console backend.
 config :logger, backends: [RingLogger]
+
+# Set the number of messages to hold in the circular buffer
+config :logger, RingLogger, max_size: 100
 
 # Use shoehorn to start the main application. See the shoehorn
 # docs for separating out critical OTP applications such as those
 # involved with firmware updates.
 config :shoehorn,
-  init: [:nerves_runtime, :nerves_network],
+  init: [:nerves_runtime, :nerves_init_gadget],
   app: Mix.Project.config()[:app]
 
 # Uncomment the following line for the interface you intend to use,
@@ -62,8 +67,11 @@ config :nerves_firmware_ssh,
 
 # Set a mdns domain and node_name to be able to remsh into the device.
 config :nerves_init_gadget,
-  node_name: :plottair,
-  mdns_domain: "plottair.local"
+  # node_name: :plottair,
+  mdns_domain: "plottair.local",
+  ifname: "wlan0",
+  address_method: :dhcp,
+  ssh_console_port: 22
 
 # for Devices that don't support usb gadget such as raspberry pi 1, 2, and 3.
 # address_method: :dhcp,
