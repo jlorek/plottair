@@ -12,6 +12,8 @@
   </head>
 
   <body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  
     <div class="container">
       <header class="header">
         <nav role="navigation">

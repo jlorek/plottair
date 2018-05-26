@@ -1,0 +1,60 @@
+
+<div class="jumbotron">
+  <h2><%= gettext "Welcome to %{name}!", name: "Plottair" %></h2>
+  <p class="lead">Upload your stuff here!</p>
+</div>
+
+<div id="app">
+
+  <form>
+    <div class="form-group">
+      <label>HPGL Upload</label>
+      <input type="file" id="file" v-on:change="upload" />
+    </div>
+
+    <div class="form-group">
+      <label>Batch</label>
+      <%# style="width:100%" class="boxsizingBorder form-control" %>
+      <textarea class="form-control" rows="10" v-model="batch"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Command</label>
+      <input type="text" class="form-control" v-model="command"></textarea>
+    </div>
+  </form>
+
+  </div>
+
+<script language="javascript">
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+    batch: "",
+    command: ""
+  },
+  methods: {
+    upload: function() {
+      let files = document.getElementById('file').files;
+      if (files.length > 0) {
+        readContent(files[0]);        
+      }
+    }
+  }
+});
+
+function readContent(file) {
+   let reader = new FileReader();
+   //reader.readAsDataURL(file);
+   reader.readAsText(file, "UTF-8");
+   reader.onload = function () {
+     console.log(reader.result);
+     app.batch = reader.result;
+   };
+   reader.onerror = function (error) {
+     console.log('Error: ', error);
+   };
+}
+</script>

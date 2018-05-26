@@ -17,6 +17,9 @@ defmodule UiWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/upload", PageController, :upload_form
+    post "/upload", PageController, :upload
+    get "/hpgl", PageController, :hpgl
   end
 
   # Other scopes may use custom stacks.
