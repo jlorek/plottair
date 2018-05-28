@@ -20,6 +20,7 @@ defmodule UiWeb.Router do
     get "/upload", PageController, :upload_form
     post "/upload", PageController, :upload
     get "/hpgl", PageController, :hpgl
+    get "/debug", PageController, :debug
   end
 
   # Other scopes may use custom stacks.

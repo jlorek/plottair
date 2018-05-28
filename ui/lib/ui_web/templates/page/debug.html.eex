@@ -1,0 +1,46 @@
+<div id="messages"></div>
+<input id="chat-input" type="text"></input>
+
+<script language="javascript">
+//import {Socket} from "phoenix"
+//import socket from "./socket"
+let socket = new Phoenix.Socket("/socket", {params: {token: window.userToken}})
+socket.connect()
+
+// Now that you are connected, you can join channels with a topic:
+let channel = socket.channel("room:lobby", {})
+channel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+  .receive("timeout", () => console.log("Networking issue. Still waiting..."))
+
+     /* let channel = socket.channel("room:123", {token: roomToken})
+     channel.on("new_msg", msg => console.log("Got message", msg) )
+     $input.onEnter( e => {
+       channel.push("new_msg", {body: e.target.val}, 10000)
+        .receive("ok", (msg) => console.log("created message", msg) )
+        .receive("error", (reasons) => console.log("create failed", reasons) )
+        .receive("timeout", () => console.log("Networking issue...") )
+     })
+     channel.join()
+       .receive("ok", ({messages}) => console.log("catching up", messsages) )
+       .receive("error", ({reason}) => console.log("failed join", reason) )
+       .receive("timeout", () => console.log("Networking issue. Still waiting...") )*/
+
+let chatInput         = document.querySelector("#chat-input")
+let messagesContainer = document.querySelector("#messages")
+
+chatInput.addEventListener("keypress", event => {
+  if(event.keyCode === 13){
+    channel.push("new_msg", {body: chatInput.value})
+    chatInput.value = ""
+  }
+})
+
+channel.on("new_msg", payload => {
+  let messageItem = document.createElement("li")
+  messageItem.innerText = `[${Date()}] ${payload.body}`
+  messagesContainer.appendChild(messageItem)
+})
+
+ </script>

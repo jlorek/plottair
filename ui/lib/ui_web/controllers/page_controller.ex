@@ -20,6 +20,10 @@ defmodule UiWeb.PageController do
     render(conn, "hpgl.html")
   end
 
+  def debug(conn, _params) do
+    render(conn, "debug.html")
+  end
+
   # def upload(conn, %{"upload" => %{"file" => file}}) do
   #   # https://alexgaribay.com/2017/01/20/upload-files-to-s3-with-phoenix-and-ex_aws-2/
   #   conn
