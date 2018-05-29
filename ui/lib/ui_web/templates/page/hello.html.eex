@@ -1,0 +1,6 @@
+<%= form_for @conn, page_path(@conn, :hello_post), fn f -> %>
+  <label>
+    Points: <%= text_input f, :points %>
+  </label>
+  <%= submit "Submit" %>
+<% end %>

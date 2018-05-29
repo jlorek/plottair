@@ -1,5 +1,6 @@
 defmodule UiWeb.PageController do
   use UiWeb, :controller
+  require Logger
 
   def index(conn, _params) do
     render conn, "index.html"
@@ -17,11 +18,40 @@ defmodule UiWeb.PageController do
   end
 
   def hpgl(conn, _params) do
-    render(conn, "hpgl.html")
+    hpgl = get_session(conn, :hpgl)
+    Logger.info("hpgl = #{hpgl}")
+    render(conn, "hpgl.html", hpgl: hpgl)
+  end
+
+  def hpgl_post(conn, params) do
+    inspect(params)
+    render(conn, "hpgl.html", hpgl: "foo")
   end
 
   def debug(conn, _params) do
     render(conn, "debug.html")
+  end
+
+  def hello(conn, _params) do
+    render(conn, "hello.html")
+  end
+
+  def hello_post(conn, %{"points" => points}) do
+    Logger.info("Points = #{points}")
+
+    range = 0..100
+    start = ["IN", "SC0,100,0,100", "SP1"]
+    random_positions =  Enum.map(1..100, fn i -> "PD#{Enum.random(range)},#{Enum.random(range)}" end)
+    stop = ["SP0", "PG"]
+
+    commands = start ++ random_positions ++ stop
+    hpgl = Enum.join(commands, ";\n")
+
+    Logger.info("hpgl =  #{hpgl}")
+
+    conn
+    |> put_session(:hpgl, hpgl)
+    |> redirect(to: page_path(conn, :hpgl))
   end
 
   # def upload(conn, %{"upload" => %{"file" => file}}) do

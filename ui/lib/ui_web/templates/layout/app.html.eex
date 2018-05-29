@@ -13,7 +13,8 @@
     <meta property="og:image" content="http://www.nothere.png">
     <meta property="og:description" content="Plott it like it's 1984">
 
-    <title>Hello Ui!</title>
+    <title>Plottair</title>
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -29,7 +30,7 @@
             <li><%= link "HPGL", to: page_path(@conn, :hpgl), class: "nav-link" %></li>
             <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
             <li><%= link "Symbolic Disarray", to: page_path(@conn, :debug), class: "nav-link" %></li>
-            <li><%= link "Random", to: page_path(@conn, :debug), class: "nav-link" %></li>
+            <li><%= link "Hello World", to: page_path(@conn, :hello), class: "nav-link" %></li>
           </ul>
         </nav>
         <span class="logo"></span>
@@ -41,6 +42,11 @@
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
+
+      <footer class="footer text-center">
+        <span class="muted">
+          # build with <a href="https://elixir-lang.org">💖</a> &amp; <a href="http://phoenixframework.org">🐦🔥</a> by jlorek</span>
+      </footer>
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
