@@ -4,8 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Plott it like it's 1984">
     <meta name="author" content="">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="plottair.local">
+    <meta property="og:url" content="http://plottair.local">
+    <meta property="og:image" content="http://www.nothere.png">
+    <meta property="og:description" content="Plott it like it's 1984">
 
     <title>Hello Ui!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
@@ -20,7 +26,10 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <li><%= link "HPGL", to: page_path(@conn, :hpgl), class: "nav-link" %></li>
+            <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
+            <li><%= link "Symbolic Disarray", to: page_path(@conn, :debug), class: "nav-link" %></li>
+            <li><%= link "Random", to: page_path(@conn, :debug), class: "nav-link" %></li>
           </ul>
         </nav>
         <span class="logo"></span>

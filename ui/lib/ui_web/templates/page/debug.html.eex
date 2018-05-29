@@ -34,28 +34,22 @@ let app = new Vue({
   }
 });
 
-let chatInput = document.querySelector("#chat-input")
-let messagesContainer = document.querySelector("#messages")
-
 //import {Socket} from "phoenix"
 //import socket from "./socket"
-let socket = new Phoenix.Socket("/socket")
-socket.connect()
+let socket = new Phoenix.Socket("/socket");
+socket.connect();
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("room:lobby", {})
+let channel = socket.channel("room:lobby", {});
 
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
-  .receive("timeout", () => console.log("Networking issue. Still waiting..."))
+  .receive("timeout", () => console.log("Networking issue. Still waiting..."));
 
 channel.on("new_msg", payload => {
   app.hpglCommands.push(payload.body);
-  //let messageItem = document.createElement("li")
-  //messageItem.innerText = `[${Date()}] ${payload.body}`
-  //messagesContainer.appendChild(messageItem)
-})
+});
 
 })();
 </script>

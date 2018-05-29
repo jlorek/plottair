@@ -6,10 +6,16 @@
 
 <div id="app">
 
+<%# <form action="/file-upload" class="dropzone">
+  <div class="fallback">
+    <input name="file" type="file" multiple />
+  </div>
+</form> %>
+
   <form>
     <div class="form-group">
       <label>HPGL Upload</label>
-      <input type="file" id="file" v-on:change="upload" />
+      <input type="file" id="file" v-on:change="upload"/>
     </div>
 
     <div class="form-group">
@@ -36,8 +42,9 @@ var app = new Vue({
     command: ""
   },
   methods: {
-    upload: function() {
-      let files = document.getElementById('file').files;
+    upload: function(event) {
+      //let files = document.getElementById('file').files;
+      let files = event.target.files;
       if (files.length > 0) {
         readContent(files[0]);        
       }

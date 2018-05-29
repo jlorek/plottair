@@ -1,5 +1,7 @@
 defmodule UiWeb.RoomChannel do
   use Phoenix.Channel
+  require Logger
+  alias Ui.Plotter
 
   def join("room:lobby", _message, socket) do
     {:ok, socket}
@@ -10,8 +12,13 @@ defmodule UiWeb.RoomChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body}
+    #broadcast! socket, "new_msg", %{body: body}
+    Plotter.send(body)
     {:noreply, socket}
+  end
+
+  def handle_in("hpgl", %{"commands" => commands}, socket) do
+    Logger.info("Received HPGL commands")
   end
 
 end
