@@ -44,8 +44,10 @@ defmodule UiWeb.PageController do
     random_positions =  Enum.map(1..100, fn i -> "PD#{Enum.random(range)},#{Enum.random(range)}" end)
     stop = ["SP0", "PG"]
 
+    # include signature at bottom
+
     commands = start ++ random_positions ++ stop
-    hpgl = Enum.join(commands, ";\n")
+    hpgl = Enum.join(commands, ";\n") <> ";\n"
 
     Logger.info("hpgl =  #{hpgl}")
 

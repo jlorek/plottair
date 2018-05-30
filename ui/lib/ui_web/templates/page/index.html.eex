@@ -29,3 +29,9 @@
     </ul>
   </div>
 </div>
+
+<footer class="footer text-center">
+  <span class="muted">
+    # build with <a href="https://elixir-lang.org">love</a>, <a href="https://nerves-project.org/">nerves</a> &amp; <a href="http://phoenixframework.org">phoenix</a> by <a href="https://github.com/jlorek">jlorek</a>
+  </span>
+</footer>
