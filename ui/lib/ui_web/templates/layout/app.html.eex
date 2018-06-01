@@ -29,9 +29,8 @@
           <ul class="nav nav-pills pull-right">
             <li><%= link "Console", to: page_path(@conn, :console), class: "nav-link" %></li>
             <li><%= link "HPGL", to: page_path(@conn, :hpgl), class: "nav-link" %></li>
-            <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
             <li><%= link "Hello World", to: page_path(@conn, :hello), class: "nav-link" %></li>
-            <li><%= link "Symbolic Disarray", to: page_path(@conn, :debug), class: "nav-link" %></li>
+            <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
           </ul>
         </nav>
         <span class="logo"></span>

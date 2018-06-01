@@ -17,18 +17,16 @@ defmodule UiWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/upload", PageController, :upload_form
-    post "/upload", PageController, :upload
+    
+    get "/console", PageController, :console
     
     get "/hpgl", PageController, :hpgl
     post "/hpgl", PageController, :hpgl_post
 
-    get "/console", PageController, :console
-
-    get "/debug", PageController, :debug
-
     get "/hello", PageController, :hello
     post "/hello", PageController, :hello_post
+
+    get "/debug", PageController, :debug
   end
 
   # Other scopes may use custom stacks.

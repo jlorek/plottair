@@ -4,8 +4,8 @@
 
   <input id="chat-input" type="text" class="form-control" v-on:keypress="onReturn" v-model="command" placeholder="Send HPGL command"></input>
 
-  <div id="log" style="overflow-y:scroll; height: 400px;">
-    <code v-for="cmd in hpglCommands" style="display:block;">{{ cmd }}</code>
+  <div id="log">
+    <code v-for="cmd in hpglCommands" class="log-entry">{{ cmd }}</code>
   </div>
 </div>
 
