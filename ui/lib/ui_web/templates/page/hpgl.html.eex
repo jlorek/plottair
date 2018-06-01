@@ -1,31 +1,36 @@
 <div id="app">
-  <form>
+  <%# <form> %>
+  <%= form_for @conn, page_path(@conn, :hpgl_post), fn f -> %>  
     <div class="form-group">
       <label>HPGL Upload</label>
       <input type="file" id="file" v-on:change="upload"/>
     </div>
 
     <div class="form-group">
-      <label>Batch</label>
-      <%# style="width:100%" class="boxsizingBorder form-control" %>
-      <textarea class="form-control" rows="10" v-model="batch"></textarea>
+      <label>Wait per character</label>
+      <input type="text" name="wpc" class="form-control" v-model="wpc"/>
     </div>
 
     <div class="form-group">
-      <label>Command</label>
-      <input type="text" class="form-control" v-model="command"></textarea>
+      <label>Batch</label>
+      <%# style="width:100%" class="boxsizingBorder form-control" %>
+      <textarea name="hpgl" class="form-control" rows="10" v-model="hpgl"></textarea>
     </div>
-  </form>
 
-  </div>
+    <div class="form-group">
+      <input type="submit" class="btn btn-primary" />
+    </div>
+  <%# </form> %>
+<% end %>
+</div>
 
 <script language="javascript">
 
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue!',
-    batch: `<%= @hpgl %>`,
+    wpc: 25,
+    hpgl: `<%= @hpgl %>`,
     command: ""
   },
   methods: {

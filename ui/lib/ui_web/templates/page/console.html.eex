@@ -1,10 +1,10 @@
 
 <div id="app">
-  <h1>HPGL Console</h1>
+  <h1>Console</h1>
 
-  <input id="chat-input" type="text" class="form-control" v-on:keypress="onReturn" v-model="command"></input>
+  <input id="chat-input" type="text" class="form-control" v-on:keypress="onReturn" v-model="command" placeholder="Send HPGL command"></input>
 
-  <div style="overflow-y:scroll; height: 400px">
+  <div id="log" style="overflow-y:scroll; height: 400px">
     <code v-for="cmd in hpglCommands" style="display:block;">{{ cmd }}</code>
   </div>
 </div>
@@ -45,9 +45,22 @@ channel.join()
   .receive("timeout", () => console.log("Networking issue. Still waiting..."));
 
 channel.on("new_msg", payload => {
-  console.log(app.hpglCommands.length)
+  //console.log(app.hpglCommands.length)
+
   app.hpglCommands.push(payload.body);
+  if (app.hpglCommands.length > 200) {
+      app.hpglCommands.shift();
+  }
+
+  app.$nextTick(function(){
+    var log = document.getElementById("log");
+    log.scrollTop = log.scrollHeight - log.clientHeight;
+  })
 });
+
+function scrollToBottom(id){
+
+}
 
 })();
 </script>

@@ -1,6 +1,21 @@
 <%= form_for @conn, page_path(@conn, :hello_post), fn f -> %>
-  <label>
-    Points: <%= text_input f, :points %>
-  </label>
-  <%= submit "Submit" %>
+  <div class="form-group">
+    <label>How many points?</label>    
+    <%= text_input f, :points, class: "form-control", value: "100" %>
+  </div>
+
+  <div class="form-group">
+    <label>How many pens?</label>    
+    <%= select f, :pens, 1..6, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Signature?</label>
+    <%= text_input f, :signature, class: "form-control", placeholder: "Catchphrase here..." %>
+  </div>
+
+  <div class="form-group">
+    <input type="submit" class="btn btn-primary" value="Generate" />
+  </div>
+  
 <% end %>
