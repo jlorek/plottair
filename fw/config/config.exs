@@ -59,6 +59,10 @@ config :ui, UiWeb.Endpoint,
   pubsub: [name: Nerves.PubSub, adapter: Phoenix.PubSub.PG2],
   code_reloader: false
 
+# UART configuration
+config :ui, Ui.UARTHandler,
+  device: "ttyAMA0"
+
 # Allows over the air updates via SSH.
 config :nerves_firmware_ssh,
   authorized_keys: [
