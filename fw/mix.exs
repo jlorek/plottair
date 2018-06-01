@@ -55,6 +55,7 @@ defmodule Fw.MixProject do
     ] ++ system(target)
   end
 
+  #defp system("rpi3"), do: [ {:nerves_system_rpi3, github: "jlorek/nerves_system_rpi3", branch: "master", runtime: false}]
   defp system("rpi"), do: [{:nerves_system_rpi, "~> 1.0 or ~> 1.0-rc", runtime: false}]
   defp system("rpi0"), do: [{:nerves_system_rpi0, "~> 1.0 or ~> 1.0-rc", runtime: false}]
   defp system("rpi2"), do: [{:nerves_system_rpi2, "~> 1.0 or ~> 1.0-rc", runtime: false}]
