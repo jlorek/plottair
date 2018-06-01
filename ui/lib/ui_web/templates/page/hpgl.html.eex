@@ -13,8 +13,7 @@
 
     <div class="form-group">
       <label>Batch</label>
-      <%# style="width:100%" class="boxsizingBorder form-control" %>
-      <textarea name="hpgl" class="form-control" rows="10" v-model="hpgl"></textarea>
+      <textarea name="hpgl" class="form-control monospace-font" rows="10" v-model="hpgl"></textarea>
     </div>
 
     <div class="form-group">

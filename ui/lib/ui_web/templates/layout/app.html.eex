@@ -15,6 +15,8 @@
 
     <title>Plottair</title>
     <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/bootstrap.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/phoenix.css") %>">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
