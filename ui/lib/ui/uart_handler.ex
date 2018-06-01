@@ -18,6 +18,7 @@ defmodule Ui.UARTHandler do
      {:ok, pid} = Nerves.UART.start_link()
      :ok = Nerves.UART.open(pid, args, speed: 9600, active: false)
      Nerves.UART.configure(pid, framing: {Nerves.UART.Framing.Line, separator: "\r\n"})
+     Nerves.UART.write(pid, "IN;")
      {:ok, struct(UARTHandler, uart: pid)}
    end
 
@@ -25,7 +26,7 @@ defmodule Ui.UARTHandler do
    def handle_cast({:write, data}, state) do
      Logger.info("# write(#{data})")
      IO.inspect(state)
-     
+
      :ok = Nerves.UART.write(state.uart, data)
      {:noreply, state}
    end
