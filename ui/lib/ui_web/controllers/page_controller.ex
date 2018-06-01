@@ -36,6 +36,7 @@ defmodule UiWeb.PageController do
     Plotter.send(hpgl, wpc)
 
     conn
+    |> put_session(:hpgl, hpgl)
     |> put_flash(:info, "Print job received.")
     |> redirect(to: page_path(conn, :console))
   end
@@ -60,18 +61,34 @@ defmodule UiWeb.PageController do
       {integer, fraction} -> integer
       :error -> 1
     end
+    
+    # some ranges from
+    # https://github.com/tobiastoft/SymbolicDisarray
+    # -- PLOTTER --
+    # --  front  --
+    # 602 - y - 10602
+    # 170
+    # |
+    # x
+    # |
+    # 15370
 
+    init = ["IN", "SP1"]
+
+    xPos = 10602
+    yPos = 1863
+    signature = case String.length(signature) do
+      0 -> []
+      _ -> ["PU#{xPos},#{yPos}", "SI0.2,0.2", "DI0,1", "DT.", "LB#{signature}."]
+    end
+    
+    scale = ["SC0,100,0,100"]
     range = 0..100
-    start = ["IN", "SC0,100,0,100", "SP1"]
     random_positions =  Enum.map(1..points, fn i -> "PD#{Enum.random(range)},#{Enum.random(range)}" end)
     stop = ["SP0", "PG"]
 
-    # include signature at bottom
-
-    commands = start ++ random_positions ++ stop
+    commands = init ++ signature ++ scale ++ random_positions ++ stop
     hpgl = Enum.join(commands, ";\n") <> ";\n"
-
-    Logger.info("hpgl =  #{hpgl}")
 
     conn
     |> put_session(:hpgl, hpgl)

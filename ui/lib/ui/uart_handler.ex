@@ -20,7 +20,11 @@ defmodule Ui.UARTHandler do
      {:ok, pid} = Nerves.UART.start_link()
      :ok = Nerves.UART.open(pid, args, speed: 9600, active: false)
      Nerves.UART.configure(pid, framing: {Nerves.UART.Framing.Line, separator: ";\r\n"})
+     
      Nerves.UART.write(pid, "IN")
+     Nerves.UART.write(pid, "PD")
+     Nerves.UART.write(pid, "PU")
+
      {:ok, struct(UARTHandler, uart: pid)}
    end
 
@@ -34,11 +38,18 @@ defmodule Ui.UARTHandler do
        Logger.info("Sending command: #{cmd}")
        :ok = Nerves.UART.write(state.uart, cmd)
        UiWeb.Endpoint.broadcast("room:lobby", "new_msg", %{body: cmd})
-       wait = String.length(cmd) * wpc
+       wait = command_multilpier(cmd) * String.length(cmd) * wpc
        :timer.sleep(wait);
      end)
 
      {:noreply, state}
+   end
+
+   defp command_multilpier(hpgl) do
+    cond do
+      String.starts_with?(hpgl, "LB") -> 50
+      true -> 1
+    end
    end
 
 #    def handle_call({:interact, timeout}, _from, state) do
