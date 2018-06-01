@@ -23,6 +23,8 @@ defmodule UiWeb.Router do
     get "/hpgl", PageController, :hpgl
     post "/hpgl", PageController, :hpgl_post
 
+    get "/console", PageController, :console
+
     get "/debug", PageController, :debug
 
     get "/hello", PageController, :hello

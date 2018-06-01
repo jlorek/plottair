@@ -1,0 +1,53 @@
+
+<div id="app">
+  <h1>HPGL Console</h1>
+
+  <input id="chat-input" type="text" class="form-control" v-on:keypress="onReturn" v-model="command"></input>
+
+  <div style="overflow-y:scroll; height: 400px">
+    <code v-for="cmd in hpglCommands" style="display:block;">{{ cmd }}</code>
+  </div>
+</div>
+
+<script language="javascript">
+(function() {
+
+let app = new Vue({
+  el: '#app',
+  data: {
+    command: "",
+    hpglCommands: []
+  },
+  methods: {
+    onReturn: function(event) {
+      if (event.keyCode === 13) {
+        channel.push("new_msg", {body: app.command}, 1000)
+          //.receive("ok", (msg) => console.log("created message", msg))
+          //.receive("error", (reasons) => console.log("create failed", reasons))
+          //.receive("timeout", () => console.log("Networking issue..."))
+        app.command = ""
+      }
+    }
+  }
+});
+
+//import {Socket} from "phoenix"
+//import socket from "./socket"
+let socket = new Phoenix.Socket("/socket");
+socket.connect();
+
+// Now that you are connected, you can join channels with a topic:
+let channel = socket.channel("room:lobby", {});
+
+channel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+  .receive("timeout", () => console.log("Networking issue. Still waiting..."));
+
+channel.on("new_msg", payload => {
+  console.log(app.hpglCommands.length)
+  app.hpglCommands.push(payload.body);
+});
+
+})();
+</script>

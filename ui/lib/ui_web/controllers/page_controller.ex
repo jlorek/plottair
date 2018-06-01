@@ -17,6 +17,10 @@ defmodule UiWeb.PageController do
     |> render("upload.html")
   end
 
+  def console(conn, _params) do
+    render(conn, "console.html")
+  end
+
   def hpgl(conn, _params) do
     hpgl = get_session(conn, :hpgl)
     Logger.info("hpgl = #{hpgl}")
