@@ -2,13 +2,14 @@ defmodule Ui.Plotter do
   require Logger
   alias Ui.UARTHandler
 
-  def send(hpgl, wpc \\ "20") do
+  def send(hpgl, write_deplay \\ "20") do
     Logger.info("Executing HPGL: #{hpgl}")
+    write_deplay = String.to_integer(write_deplay)
 
-    wpc = String.to_integer(wpc)
-    UARTHandler.write(GlobalUART, hpgl, wpc)
+    UARTHandler.write(GlobalUART, hpgl, write_deplay)
     # UiWeb.Endpoint.broadcast("room:lobby", "new_msg", %{body: hpgl})
   end
+end
 
 #https://elixirforum.com/t/nerves-uart-write-doesnt-work-from-phoenix-controller/13333/3
 #Nerves.UART.enumerate
@@ -24,5 +25,3 @@ defmodule Ui.Plotter do
 #flush
 #Nerves.UART.close(pid)
 #Nerves.UART.stop(pid)
-
-end

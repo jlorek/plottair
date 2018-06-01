@@ -13,13 +13,10 @@ defmodule UiWeb.PageController do
 
   def hpgl(conn, _params) do
     hpgl = get_session(conn, :hpgl)
-    Logger.info("hpgl = #{hpgl}")
     render(conn, "hpgl.html", hpgl: hpgl)
   end
 
-  def hpgl_post(conn, %{"hpgl" => hpgl, "wpc" => wpc} = params) do
-    inspect(params)
-    #render(conn, "hpgl.html", hpgl: "foo")
+  def hpgl_post(conn, %{"hpgl" => hpgl, "wpc" => wpc}) do
     Logger.info("hpgl = #{hpgl}")
     Logger.info("wpc = #{wpc}")
     Plotter.send(hpgl, wpc)
@@ -30,57 +27,29 @@ defmodule UiWeb.PageController do
     |> redirect(to: page_path(conn, :console))
   end
 
-  def debug(conn, _params) do
-    render(conn, "debug.html")
-  end
-
   def hello(conn, _params) do
     render(conn, "hello.html")
   end
 
   def hello_post(conn, %{"points" => points, "pens" => pens, "signature" => signature}) do
-    Logger.info("Points = #{points}")
-    
     points = case Integer.parse(points) do
-      {integer, fraction} -> integer
+      {integer, _fraction} -> integer
       :error -> 100
     end
     
     pens = case Integer.parse(pens) do
-      {integer, fraction} -> integer
+      {integer, _fraction} -> integer
       :error -> 1
     end
     
-    # some ranges from
-    # https://github.com/tobiastoft/SymbolicDisarray
-    # -- PLOTTER --
-    # --  front  --
-    # 602 - y - 10602
-    # 170
-    # |
-    # x
-    # |
-    # 15370
-
-    init = ["IN", "SP1"]
-
-    xPos = 10602
-    yPos = 1863
-    signature = case String.length(signature) do
-      0 -> []
-      _ -> ["PU#{xPos},#{yPos}", "SI0.2,0.2", "DI0,1", "DT.", "LB#{signature}."]
-    end
-    
-    scale = ["SC0,100,0,100"]
-    range = 0..100
-    random_positions =  Enum.map(1..points, fn i -> "PD#{Enum.random(range)},#{Enum.random(range)}" end)
-    stop = ["SP0", "PG"]
-
-    commands = init ++ signature ++ scale ++ random_positions ++ stop
-    hpgl = Enum.join(commands, ";\n") <> ";\n"
+    hpgl = Ui.HpglHello.generate(points, pens, signature)
 
     conn
     |> put_session(:hpgl, hpgl)
     |> redirect(to: page_path(conn, :hpgl))
+  end
+
+  def debug(conn, _params) do
+    render(conn, "debug.html")
   end
 end

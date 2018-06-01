@@ -3,8 +3,6 @@ defmodule Ui.UARTHandler do
    require Logger
    alias Ui.UARTHandler
 
-   @ms_per_char 10
-
    defstruct [:uart]
 
    def start_link(opts \\ []) do
@@ -22,6 +20,9 @@ defmodule Ui.UARTHandler do
      Nerves.UART.configure(pid, framing: {Nerves.UART.Framing.Line, separator: ";\r\n"})
      
      Nerves.UART.write(pid, "IN")
+     # knock knock
+     Nerves.UART.write(pid, "PD")
+     Nerves.UART.write(pid, "PU")
      Nerves.UART.write(pid, "PD")
      Nerves.UART.write(pid, "PU")
 
@@ -29,34 +30,26 @@ defmodule Ui.UARTHandler do
    end
 
    @imp true
-   def handle_cast({:write, data, wpc}, state) do
-     Logger.info("# write(#{data})")
-     IO.inspect(state)
-
+   def handle_cast({:write, data, write_delay}, state) do
      commands = String.split(data, [";", "\r", "\n"], trim: true)
+
      Enum.each(commands, fn cmd ->
        Logger.info("Sending command: #{cmd}")
+
        :ok = Nerves.UART.write(state.uart, cmd)
-       UiWeb.Endpoint.broadcast("room:lobby", "new_msg", %{body: cmd})
-       wait = command_multilpier(cmd) * String.length(cmd) * wpc
+       UiWeb.Endpoint.broadcast("room:lobby", "new_msg", %{body: "#{cmd};"})
+
+       wait = String.length(cmd) * write_delay * command_multiplier(cmd)
        :timer.sleep(wait);
      end)
 
      {:noreply, state}
    end
 
-   defp command_multilpier(hpgl) do
+   defp command_multiplier(hpgl) do
     cond do
-      String.starts_with?(hpgl, "LB") -> 50
+      String.starts_with?(hpgl, "LB") -> 15
       true -> 1
     end
    end
-
-#    def handle_call({:interact, timeout}, _from, state) do
-#      :ok = Nerves.UART.write(state.uart, "SOME FORMATTED BINARY")
-#      case Nerves.UART.read(state.uart, timeout) do
-#        {:ok, data} -> {:reply, {:ok, data}, state}
-#        {:error, reason} -> {:reply, {:error, reason}, state}
-#      end
-#    end
 end
