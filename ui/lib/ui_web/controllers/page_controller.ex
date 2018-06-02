@@ -16,10 +16,10 @@ defmodule UiWeb.PageController do
     render(conn, "hpgl.html", hpgl: hpgl)
   end
 
-  def hpgl_post(conn, %{"hpgl" => hpgl, "wpc" => wpc}) do
+  def hpgl_post(conn, %{"hpgl" => hpgl, "character_delay" => character_delay}) do
     Logger.info("hpgl = #{hpgl}")
-    Logger.info("wpc = #{wpc}")
-    Plotter.send(hpgl, wpc)
+    Logger.info("character_delay = #{character_delay}")
+    Plotter.send(hpgl, character_delay)
 
     conn
     |> put_session(:hpgl, hpgl)

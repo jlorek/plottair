@@ -6,8 +6,8 @@
     </div>
 
     <div class="form-group">
-      <label>Wait per character</label>
-      <input type="text" name="wpc" class="form-control" v-model="wpc"/>
+      <label>Character delay</label>
+      <input type="text" name="character_delay" class="form-control" v-model="character_delay"/>
     </div>
 
     <div class="form-group">
@@ -26,8 +26,8 @@
 var app = new Vue({
   el: '#app',
   data: {
-    wpc: 25,
-    hpgl: `<%= @hpgl %>`,
+    character_delay: 25,
+    hpgl: `<%= raw @hpgl %>`,
     command: ""
   },
   methods: {

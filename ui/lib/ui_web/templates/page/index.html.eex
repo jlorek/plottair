@@ -9,7 +9,7 @@
     <h4>Inspiration</h4>
     <ul>
       <li>
-        <a href="http://www.tobiastoft.com/posts/an-intro-to-pen-plotters">An into to Pen Plotters</a>
+        <a href="http://www.tobiastoft.com/posts/an-intro-to-pen-plotters">An intro to Pen Plotters</a>
       </li>
       <li>
         <a href="https://mattdesl.svbtle.com/pen-plotter-1">Pen Plotter Art &amp; Algorithms</a>
@@ -25,6 +25,9 @@
       </li>
       <li>
         <a href="http://www.isoplotec.co.jp/HPGL/eHPGL.htm">HP-GL Reference Guide</a>
+      </li>
+      <li>
+        <a href="http://www.hpmuseum.net/document.php?catfile=213">The HP-GL/2 and HP RTL Reference Guide</a>
       </li>
     </ul>
   </div>
