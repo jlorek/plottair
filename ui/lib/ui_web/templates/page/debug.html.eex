@@ -1,55 +1,723 @@
+<style>
+  canvas { border: 1px solid #ccc; position: relative; margin-top: 10px;}
+</style>
 
-<div id="app">
-  <h1>{{ message }}</h1>
-  <ul>
-  <li v-for="cmd in hpglCommands">
-    {{ cmd }}
-  </li>
-</ul>
+<canvas id="canvas"></canvas>
 
-  <div id="messages"></div>
-  <input id="chat-input" type="text" class="form-control" v-on:keypress="onReturn" v-model="command"></input>
-</div>
+<script>
 
-<script language="javascript">
-(function() {
+let hpgl = `
+IN;
+SP1;
+PU15370,1863;
+SI0.2,0.2;
+DI0,1;
+LBDelaunay Triangulation;
+SC0,100,0,100;
+PU0,0;
+PD0,100;
+PD98,100;
+PD98,0;
+PD0,0;
+PU;
+PU47,57;
+PD32,68;
+PD42,67;
+PD47,57;
+PU47,57;
+PD23,55;
+PD32,68;
+PD47,57;
+PU23,55;
+PD22,56;
+PD32,68;
+PD23,55;
+PU32,68;
+PD33,74;
+PD42,67;
+PD32,68;
+PU25,73;
+PD33,74;
+PD32,68;
+PD25,73;
+PU36,76;
+PD44,74;
+PD42,67;
+PD36,76;
+PU42,67;
+PD65,65;
+PD47,57;
+PD42,67;
+PU33,74;
+PD36,76;
+PD42,67;
+PD33,74;
+PU33,74;
+PD21,84;
+PD36,76;
+PD33,74;
+PU22,56;
+PD25,73;
+PD32,68;
+PD22,56;
+PU22,56;
+PD16,68;
+PD25,73;
+PD22,56;
+PU23,55;
+PD19,48;
+PD22,56;
+PD23,55;
+PU39,31;
+PD19,48;
+PD23,55;
+PD39,31;
+PU12,53;
+PD16,68;
+PD22,56;
+PD12,53;
+PU47,57;
+PD39,31;
+PD23,55;
+PD47,57;
+PU64,58;
+PD54,43;
+PD47,57;
+PD64,58;
+PU19,48;
+PD12,53;
+PD22,56;
+PD19,48;
+PU65,65;
+PD64,58;
+PD47,57;
+PD65,65;
+PU36,76;
+PD44,81;
+PD44,74;
+PD36,76;
+PU42,85;
+PD44,81;
+PD36,76;
+PD42,85;
+PU16,68;
+PD15,74;
+PD25,73;
+PD16,68;
+PU21,84;
+PD42,85;
+PD36,76;
+PD21,84;
+PU6,68;
+PD15,74;
+PD16,68;
+PD6,68;
+PU54,43;
+PD39,31;
+PD47,57;
+PD54,43;
+PU19,48;
+PD13,42;
+PD12,53;
+PD19,48;
+PU39,31;
+PD15,40;
+PD19,48;
+PD39,31;
+PU21,84;
+PD33,74;
+PD25,73;
+PD21,84;
+PU15,40;
+PD13,42;
+PD19,48;
+PD15,40;
+PU65,65;
+PD44,74;
+PD54,83;
+PD65,65;
+PU65,65;
+PD42,67;
+PD44,74;
+PD65,65;
+PU54,83;
+PD44,74;
+PD44,81;
+PD54,83;
+PU15,74;
+PD21,84;
+PD25,73;
+PD15,74;
+PU42,85;
+PD54,83;
+PD44,81;
+PD42,85;
+PU11,93;
+PD21,91;
+PD21,84;
+PD11,93;
+PU12,53;
+PD6,68;
+PD16,68;
+PD12,53;
+PU0,64;
+PD6,68;
+PD12,53;
+PD0,64;
+PU64,81;
+PD69,68;
+PD65,65;
+PD64,81;
+PU65,65;
+PD69,68;
+PD64,58;
+PD65,65;
+PU54,83;
+PD64,81;
+PD65,65;
+PD54,83;
+PU21,84;
+PD21,91;
+PD42,85;
+PD21,84;
+PU42,85;
+PD57,91;
+PD54,83;
+PD42,85;
+PU54,83;
+PD57,91;
+PD64,81;
+PD54,83;
+PU6,79;
+PD21,84;
+PD15,74;
+PD6,79;
+PU6,68;
+PD6,79;
+PD15,74;
+PD6,68;
+PU2,32;
+PD0,64;
+PD12,53;
+PD2,32;
+PU0,64;
+PD6,79;
+PD6,68;
+PD0,64;
+PU54,43;
+PD52,16;
+PD39,31;
+PD54,43;
+PU64,58;
+PD70,41;
+PD54,43;
+PD64,58;
+PU78,49;
+PD70,41;
+PD64,58;
+PD78,49;
+PU79,50;
+PD78,49;
+PD64,58;
+PD79,50;
+PU72,77;
+PD72,70;
+PD69,68;
+PD72,77;
+PU64,81;
+PD72,77;
+PD69,68;
+PD64,81;
+PU57,92;
+PD57,91;
+PD51,98;
+PD57,92;
+PU57,91;
+PD59,93;
+PD64,81;
+PD57,91;
+PU51,98;
+PD57,91;
+PD42,85;
+PD51,98;
+PU77,98;
+PD72,77;
+PD64,81;
+PD77,98;
+PU15,40;
+PD2,32;
+PD13,42;
+PD15,40;
+PU13,42;
+PD2,32;
+PD12,53;
+PD13,42;
+PU39,31;
+PD19,20;
+PD15,40;
+PD39,31;
+PU25,15;
+PD19,20;
+PD39,31;
+PD25,15;
+PU57,92;
+PD59,93;
+PD57,91;
+PD57,92;
+PU51,98;
+PD59,93;
+PD57,92;
+PD51,98;
+PU19,20;
+PD2,32;
+PD15,40;
+PD19,20;
+PU64,58;
+PD69,68;
+PD82,55;
+PD64,58;
+PU79,50;
+PD64,58;
+PD82,55;
+PD79,50;
+PU21,91;
+PD51,98;
+PD42,85;
+PD21,91;
+PU21,91;
+PD0,100;
+PD51,98;
+PD21,91;
+PU6,79;
+PD11,93;
+PD21,84;
+PD6,79;
+PU2,87;
+PD11,93;
+PD6,79;
+PD2,87;
+PU82,55;
+PD69,68;
+PD72,70;
+PD82,55;
+PU19,20;
+PD2,21;
+PD2,32;
+PD19,20;
+PU51,13;
+PD25,15;
+PD39,31;
+PD51,13;
+PU70,41;
+PD66,25;
+PD54,43;
+PD70,41;
+PU79,30;
+PD66,25;
+PD70,41;
+PD79,30;
+PU80,33;
+PD70,41;
+PD84,38;
+PD80,33;
+PU66,25;
+PD52,16;
+PD54,43;
+PD66,25;
+PU0,64;
+PD2,87;
+PD6,79;
+PD0,64;
+PU81,33;
+PD80,33;
+PD84,38;
+PD81,33;
+PU94,65;
+PD82,55;
+PD72,70;
+PD94,65;
+PU52,16;
+PD51,13;
+PD39,31;
+PD52,16;
+PU62,17;
+PD51,13;
+PD52,16;
+PD62,17;
+PU66,25;
+PD62,17;
+PD52,16;
+PD66,25;
+PU86,18;
+PD62,17;
+PD66,25;
+PD86,18;
+PU12,0;
+PD2,21;
+PD19,20;
+PD12,0;
+PU2,32;
+PD0,0;
+PD0,64;
+PD2,32;
+PU70,41;
+PD78,49;
+PD84,38;
+PD70,41;
+PU80,33;
+PD79,30;
+PD70,41;
+PD80,33;
+PU40,1;
+PD24,5;
+PD25,15;
+PD40,1;
+PU62,17;
+PD52,9;
+PD51,13;
+PD62,17;
+PU62,4;
+PD52,9;
+PD62,17;
+PD62,4;
+PU84,38;
+PD78,49;
+PD88,48;
+PD84,38;
+PU80,33;
+PD82,32;
+PD79,30;
+PD80,33;
+PU88,48;
+PD78,49;
+PD79,50;
+PD88,48;
+PU84,38;
+PD82,32;
+PD81,33;
+PD84,38;
+PU81,33;
+PD82,32;
+PD80,33;
+PD81,33;
+PU79,30;
+PD86,18;
+PD66,25;
+PD79,30;
+PU82,55;
+PD88,48;
+PD79,50;
+PD82,55;
+PU86,31;
+PD85,30;
+PD82,32;
+PD86,31;
+PU90,52;
+PD88,48;
+PD82,55;
+PD90,52;
+PU2,87;
+PD0,97;
+PD11,93;
+PD2,87;
+PU11,93;
+PD0,100;
+PD21,91;
+PD11,93;
+PU0,64;
+PD0,97;
+PD2,87;
+PD0,64;
+PU25,15;
+PD24,5;
+PD19,20;
+PD25,15;
+PU40,1;
+PD25,15;
+PD51,13;
+PD40,1;
+PU86,31;
+PD82,32;
+PD84,38;
+PD86,31;
+PU94,65;
+PD90,52;
+PD82,55;
+PD94,65;
+PU72,77;
+PD88,83;
+PD72,70;
+PD72,77;
+PU59,93;
+PD71,100;
+PD64,81;
+PD59,93;
+PU51,98;
+PD71,100;
+PD59,93;
+PD51,98;
+PU0,100;
+PD71,100;
+PD51,98;
+PD0,100;
+PU0,97;
+PD0,100;
+PD11,93;
+PD0,97;
+PU86,31;
+PD84,38;
+PD92,48;
+PD86,31;
+PU82,32;
+PD84,27;
+PD79,30;
+PD82,32;
+PU92,48;
+PD84,38;
+PD88,48;
+PD92,48;
+PU90,52;
+PD92,48;
+PD88,48;
+PD90,52;
+PU94,65;
+PD92,48;
+PD90,52;
+PD94,65;
+PU52,9;
+PD40,1;
+PD51,13;
+PD52,9;
+PU62,4;
+PD40,1;
+PD52,9;
+PD62,4;
+PU85,30;
+PD84,27;
+PD82,32;
+PD85,30;
+PU86,31;
+PD84,27;
+PD85,30;
+PD86,31;
+PU71,100;
+PD77,98;
+PD64,81;
+PD71,100;
+PU77,98;
+PD85,88;
+PD72,77;
+PD77,98;
+PU85,88;
+PD88,83;
+PD72,77;
+PD85,88;
+PU88,83;
+PD94,65;
+PD72,70;
+PD88,83;
+PU64,5;
+PD62,4;
+PD62,17;
+PD64,5;
+PU86,18;
+PD64,5;
+PD62,17;
+PD86,18;
+PU88,83;
+PD90,87;
+PD94,65;
+PD88,83;
+PU85,88;
+PD90,87;
+PD88,83;
+PD85,88;
+PU98,100;
+PD90,87;
+PD85,88;
+PD98,100;
+PU24,5;
+PD12,0;
+PD19,20;
+PD24,5;
+PU40,1;
+PD12,0;
+PD24,5;
+PD40,1;
+PU84,27;
+PD86,18;
+PD79,30;
+PD84,27;
+PU93,24;
+PD86,18;
+PD84,27;
+PD93,24;
+PU93,24;
+PD84,27;
+PD86,31;
+PD93,24;
+PU94,65;
+PD93,24;
+PD92,48;
+PD94,65;
+PU92,48;
+PD93,24;
+PD86,31;
+PD92,48;
+PU12,0;
+PD0,0;
+PD2,21;
+PD12,0;
+PU2,21;
+PD0,0;
+PD2,32;
+PD2,21;
+PU77,98;
+PD98,100;
+PD85,88;
+PD77,98;
+PU90,87;
+PD98,100;
+PD94,65;
+PD90,87;
+PU94,65;
+PD98,0;
+PD93,24;
+PD94,65;
+PU71,100;
+PD98,100;
+PD77,98;
+PD71,100;
+PU93,24;
+PD98,0;
+PD86,18;
+PD93,24;
+PU86,18;
+PD98,0;
+PD64,5;
+PD86,18;
+PU64,5;
+PD98,0;
+PD62,4;
+PD64,5;
+PU62,4;
+PD98,0;
+PD40,1;
+PD62,4;
+PU40,1;
+PD98,0;
+PD12,0;
+PD40,1;
+PU98,100;
+PD98,0;
+PD94,65;
+PD98,100;
+PU;
+SP0;
+PG
+`
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+ctx.lineJoin = 'round';
+ctx.lineCap = 'round';
 
-let app = new Vue({
-  el: '#app',
-  data: {
-    message: "Hello Socket!",
-    command: "",
-    hpglCommands: []
-  },
-  methods: {
-    onReturn: function(event) {
-      if (event.keyCode === 13) {
-        channel.push("new_msg", {body: app.command}, 1000)
-          //.receive("ok", (msg) => console.log("created message", msg))
-          //.receive("error", (reasons) => console.log("create failed", reasons))
-          //.receive("timeout", () => console.log("Networking issue..."))
-        app.command = ""
-      }
+// 1:1.41
+var w = 700;
+var h = w * 1.41;
+
+canvas.style.width = w + 'px';
+canvas.style.height = h + 'px';
+canvas.width = w;
+canvas.height = h;
+
+if (window.devicePixelRatio >= 2) {
+  canvas.width = w * 2;
+  canvas.height = h * 2;
+  ctx.scale(2, 2);
+}
+
+let pX = 0;
+let pY = 0;
+let xMin = 0;
+let xMax = 15370;
+let yMin = 0;
+let yMax = 10602;
+let lines = [];
+
+/*
+# some ranges from
+# https://github.com/tobiastoft/SymbolicDisarray
+# -- PLOTTER --
+# --  front  --
+# 0 - 602 - y - 10602 - ?
+# |
+# 170
+# |
+# x
+# |
+# 15370
+# |
+# ?
+*/
+
+function map (num, in_min, in_max, out_min, out_max) {
+  return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+commands = hpgl.split(/[\r\n;]+/)
+_.each(commands, (cmd) => {
+  if (cmd.startsWith("PU")) {
+    let params = cmd.match(/(\d+),(\d+)/);
+    if (params != null) {
+      pX = parseInt(params[1]);
+      pY = parseInt(params[2]);
     }
   }
-});
 
-//import {Socket} from "phoenix"
-//import socket from "./socket"
-let socket = new Phoenix.Socket("/socket");
-socket.connect();
+  if (cmd.startsWith("PD")) {
+    let params = cmd.match(/(\d+),(\d+)/);
+    if (params != null) {
+      let fromX = map(pX, xMin, xMax, 0, w);
+      let fromY = map(pY, yMin, yMax, 0, h);
+      let toX = map(parseInt(params[1]), xMin, xMax, 0, w);
+      let toY = map(parseInt(params[2]), yMin, yMax, 0, h);
+      lines.push([[fromX, fromY], [toX, toY]]);
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("room:lobby", {});
+      pX = parseInt(params[1]);
+      pY = parseInt(params[2]);
+    }
+  }
 
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-  .receive("timeout", () => console.log("Networking issue. Still waiting..."));
+  if (cmd.startsWith("SC")) {
+    let params = cmd.match(/(\d+),(\d+),(\d+),(\d+)/);
+    if (params != null) {
+      xMin = parseInt(params[1]);
+      xMax = parseInt(params[2]);
+      yMin = parseInt(params[3]);
+      yMax = parseInt(params[4]);
+    }
+  }
+})
 
-channel.on("new_msg", payload => {
-  app.hpglCommands.push(payload.body);
-});
+function frame() {
+  requestAnimationFrame(frame);
+  draw();
+}
 
-})();
+frame();
+
+function draw() {
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = 'rgba(0,0,0,1)';
+  ctx.lineWidth = 0.5;
+  
+  _.each(lines, line => {
+    let from = line[0];
+    let to = line[1];
+    ctx.moveTo(from[0], from[1]);
+    ctx.lineTo(to[0], to[1]);
+  });
+  ctx.stroke();
+}
 </script>
+

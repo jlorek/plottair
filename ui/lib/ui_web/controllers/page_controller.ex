@@ -56,6 +56,10 @@ defmodule UiWeb.PageController do
     |> redirect(to: page_path(conn, :hpgl))
   end
 
+  def preview(conn, %{"hpgl" => hpgl}) do
+    render(conn, "preview.html", hpgl: hpgl)
+  end
+
   def debug(conn, _params) do
     render(conn, "debug.html")
   end
