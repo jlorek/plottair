@@ -22,6 +22,7 @@
 
   <body>
     <script src="<%= static_path(@conn, "/js/phoenix.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/underscore.js") %>"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     
   
@@ -32,6 +33,7 @@
             <li><%= link "Console", to: page_path(@conn, :console), class: "nav-link" %></li>
             <li><%= link "HPGL", to: page_path(@conn, :hpgl), class: "nav-link" %></li>
             <li><%= link "Hello World", to: page_path(@conn, :hello), class: "nav-link" %></li>
+            <li><%= link "Triangulation", to: page_path(@conn, :triangulation), class: "nav-link" %></li>
             <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
           </ul>
         </nav>

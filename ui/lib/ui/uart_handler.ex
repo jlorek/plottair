@@ -48,7 +48,7 @@ defmodule Ui.UARTHandler do
 
    defp command_multiplier(hpgl) do
     cond do
-      String.starts_with?(hpgl, "LB") -> 15
+      String.starts_with?(hpgl, "LB") -> 222
       true -> 1
     end
    end

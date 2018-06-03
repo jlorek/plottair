@@ -19,7 +19,8 @@ config :logger, :console,
   metadata: [:user_id]
 
 config :ui, Ui.UARTHandler,
-  device: "tty.usbserial"
+  device: "tty.Bluetooth-Incoming-Port"
+  #device: "tty.usbserial"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

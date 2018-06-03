@@ -11,20 +11,27 @@ defmodule UiWeb.PageController do
     render(conn, "console.html")
   end
 
-  def hpgl(conn, _params) do
-    hpgl = get_session(conn, :hpgl)
-    render(conn, "hpgl.html", hpgl: hpgl)
-  end
-
-  def hpgl_post(conn, %{"hpgl" => hpgl, "character_delay" => character_delay}) do
+  def console_post(conn,  %{"hpgl" => hpgl, "character_delay" => character_delay}) do
     Logger.info("hpgl = #{hpgl}")
     Logger.info("character_delay = #{character_delay}")
     Plotter.send(hpgl, character_delay)
 
     conn
-    |> put_session(:hpgl, hpgl)
     |> put_flash(:info, "Print job received.")
-    |> redirect(to: page_path(conn, :console))
+    |> render("console.html")
+  end
+
+  def hpgl(conn, _params) do
+    hpgl = get_session(conn, :hpgl)
+    render(conn, "hpgl.html", hpgl: hpgl)
+  end
+
+  def hpgl_post(conn, %{"hpgl" => hpgl}) do
+    render(conn, "hpgl.html", hpgl: hpgl)
+  end
+
+  def triangulation(conn, _params) do
+    render(conn, "triangulation.html")
   end
 
   def hello(conn, _params) do

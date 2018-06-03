@@ -19,12 +19,15 @@ defmodule UiWeb.Router do
     get "/", PageController, :index
     
     get "/console", PageController, :console
+    post "/console", PageController, :console_post
     
     get "/hpgl", PageController, :hpgl
     post "/hpgl", PageController, :hpgl_post
 
     get "/hello", PageController, :hello
     post "/hello", PageController, :hello_post
+
+    get "/triangulation", PageController, :triangulation
 
     get "/debug", PageController, :debug
   end
