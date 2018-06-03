@@ -29,7 +29,8 @@ defmodule UiWeb.Router do
 
     get "/triangulation", PageController, :triangulation
 
-    post "/preview", PageController, :preview
+    get "/preview", PageController, :preview
+    post "/preview", PageController, :preview_post
 
     get "/debug", PageController, :debug
   end

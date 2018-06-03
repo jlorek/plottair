@@ -5,7 +5,6 @@
 <canvas id="canvas"></canvas>
 
 <script>
-
   let hpgl = `<%= raw @hpgl %>`
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
@@ -88,14 +87,14 @@
         yMax = parseInt(params[4]);
       }
     }
-  })
+  });
 
-  function frame() {
+  /*function frame() {
     requestAnimationFrame(frame);
     draw();
-  }
+  }*/
 
-  frame();
+  //frame();
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
@@ -110,5 +109,7 @@
     });
     ctx.stroke();
   }
+
+  draw();
 </script>
 

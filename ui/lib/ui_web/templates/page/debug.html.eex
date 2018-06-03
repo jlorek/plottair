@@ -616,6 +616,17 @@ PU;
 SP0;
 PG
 `
+
+hpgl2 = `
+SC0,100,0,100;
+PU0,0;
+PD0,100;
+PD98,100;
+PD98,0;
+PD0,0;
+PU;
+`
+
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 ctx.lineJoin = 'round';
@@ -659,12 +670,13 @@ let lines = [];
 # |
 # ?
 */
+// canvas has flipped coordinate system
 
 function map (num, in_min, in_max, out_min, out_max) {
   return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-commands = hpgl.split(/[\r\n;]+/)
+commands = hpgl2.split(/[\r\n;]+/)
 _.each(commands, (cmd) => {
   if (cmd.startsWith("PU")) {
     let params = cmd.match(/(\d+),(\d+)/);
@@ -699,16 +711,16 @@ _.each(commands, (cmd) => {
   }
 })
 
-function frame() {
+/*function frame() {
   requestAnimationFrame(frame);
   draw();
-}
+}*/
 
-frame();
+//frame();
 
 function draw() {
   ctx.clearRect(0, 0, w, h);
-  ctx.strokeStyle = 'rgba(0,0,0,1)';
+  //ctx.strokeStyle = 'rgba(0,0,0,1)';
   ctx.lineWidth = 0.5;
   
   _.each(lines, line => {
@@ -719,5 +731,7 @@ function draw() {
   });
   ctx.stroke();
 }
+
+draw();
 </script>
 
