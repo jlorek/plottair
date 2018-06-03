@@ -67,11 +67,15 @@
     if (cmd.startsWith("PD")) {
       let params = cmd.match(/(\d+),(\d+)/);
       if (params != null) {
-        let fromX = map(pX, xMin, xMax, 0, w);
-        let fromY = map(pY, yMin, yMax, 0, h);
-        let toX = map(parseInt(params[1]), xMin, xMax, 0, w);
-        let toY = map(parseInt(params[2]), yMin, yMax, 0, h);
-        lines.push([[fromX, fromY], [toX, toY]]);
+        // map x to height an y to width...
+        let fromX = map(pX, xMin, xMax, 0, h);
+        let fromY = map(pY, yMin, yMax, 0, w);
+        let toX = map(parseInt(params[1]), xMin, xMax, 0, h);
+        let toY = map(parseInt(params[2]), yMin, yMax, 0, w);
+        // ...then flip positions
+        // since canvas and paper coordinate
+        // systems are flipped
+        lines.push([[fromY, fromX], [toY, toX]]);
 
         pX = parseInt(params[1]);
         pY = parseInt(params[2]);
