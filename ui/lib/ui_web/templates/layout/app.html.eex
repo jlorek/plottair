@@ -36,8 +36,13 @@
           <ul class="nav nav-pills pull-right">
             <li><%= link "Console", to: page_path(@conn, :console), class: "nav-link" %></li>
             <li><%= link "HPGL", to: page_path(@conn, :hpgl), class: "nav-link" %></li>
-            <li><%= link "Hello World", to: page_path(@conn, :hello), class: "nav-link" %></li>
-            <li><%= link "Triangulation", to: page_path(@conn, :triangulation), class: "nav-link" %></li>
+            <li role="presentation" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Generators <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link "Hello World", to: page_path(@conn, :hello), class: "nav-link" %></li>
+                <li><%= link "Triangulation", to: page_path(@conn, :triangulation), class: "nav-link" %></li>
+              </ul>
+            </li>
             <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
           </ul>
         </nav>

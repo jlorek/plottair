@@ -1,7 +1,8 @@
+<h1>Debug</h1>
+
 <canvas id="canvas" class="preview-canvas"></canvas>
 
 <script>
-
 let hpgl = `
 IN;
 SP1;
