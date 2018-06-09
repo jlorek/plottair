@@ -40,6 +40,7 @@ defmodule Ui.UARTHandler do
        UiWeb.Endpoint.broadcast("room:lobby", "new_msg", %{body: "#{cmd};"})
 
        wait = String.length(cmd) * write_delay * command_multiplier(cmd)
+       Logger.info("Delay #{wait}ms")
        :timer.sleep(wait);
      end)
 
@@ -48,7 +49,7 @@ defmodule Ui.UARTHandler do
 
    defp command_multiplier(hpgl) do
     cond do
-      String.starts_with?(hpgl, "LB") -> 222
+      String.starts_with?(hpgl, "LB") -> 22
       true -> 1
     end
    end

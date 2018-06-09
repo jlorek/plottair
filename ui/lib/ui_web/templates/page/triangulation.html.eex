@@ -30,74 +30,56 @@
     },
     methods: {
       generate: function() {
-        /*
-        # some ranges from
-        # https://github.com/tobiastoft/SymbolicDisarray
-        # -- PLOTTER --
-        # --  front  --
-        # 0 - 602 - y - 10602 - ?
-        # |
-        # 170
-        # |
-        # x
-        # |
-        # 15370
-        # |
-        # ?
-        */
+        let builder = new HpglBuilder(true);
 
-          let xMin = 0;
-          let xMax = 98;
-          let yMin = 0;
-          let yMax = 100;
-          let commands = ["IN", "SP1"];
+        let xMin = 0;
+        let xMax = 98;
+        let yMin = 0;
+        let yMax = 100;
 
-          let xPos = 15370;
-          let yPos = 1863;
-          let eot = String.fromCharCode(3);
+        let xPos = 15370;
+        let yPos = 1863;
 
-          // signature
-          commands.push(`PU${xPos},${yPos}`);
-          commands.push("SI0.2,0.2");
-          commands.push("DI0,1");
-          commands.push(`LB${this.signature}${eot}`)
+        // signature
+        builder.pu(xPos, yPos);
+        builder.si(0.2, 0.2);
+        builder.di(0, 1);
+        builder.lb(this.signature);
 
-          // scaling
-          commands.push("SC0,100,0,100")
+        // scaling
+        builder.sc(0, 100, 0, 100);
 
-          // frame
-          commands.push(`PU${xMin},${yMin}`)
-          commands.push(`PD${xMin},${yMax}`)
-          commands.push(`PD${xMax},${yMax}`)
-          commands.push(`PD${xMax},${yMin}`)
-          commands.push(`PD${xMin},${yMin}`)
-          commands.push("PU")
+        // frame
+        builder.pu(xMin, yMin);
+        builder.pd(xMin, yMax)
+        builder.pd(xMax, yMax)
+        builder.pd(xMax, yMin)
+        builder.pd(xMin, yMin)
+        builder.pu();
 
-          let points = [[xMin, yMin], [xMax, yMin], [xMin, yMax], [xMax, yMax]];
-          for (let i = 0; i < this.numPoints; ++i) {
-              points.push([_.random(xMin, xMax), _.random(yMin, yMax)]);
-          }
-          
-          let delaunay = Delaunator.from(points);
-          let triangles = delaunay.triangles;
-          for (var i = 0; i < triangles.length; i += 3) {
-              let p0 = triangles[i];
-              let p1 = triangles[i + 1];
-              let p2 = triangles[i + 2];
+        let points = [[xMin, yMin], [xMax, yMin], [xMin, yMax], [xMax, yMax]];
+        for (let i = 0; i < this.numPoints; ++i) {
+            points.push([_.random(xMin, xMax), _.random(yMin, yMax)]);
+        }
+        
+        let delaunay = Delaunator.from(points);
+        let triangles = delaunay.triangles;
+        for (var i = 0; i < triangles.length; i += 3) {
+            let p0 = triangles[i];
+            let p1 = triangles[i + 1];
+            let p2 = triangles[i + 2];
 
-              commands.push(`PU${points[p0][0]},${points[p0][1]}`);
-              commands.push(`PD${points[p1][0]},${points[p1][1]}`);
-              commands.push(`PD${points[p2][0]},${points[p2][1]}`);
-              commands.push(`PD${points[p0][0]},${points[p0][1]}`);
-          }
+            builder.pu(points[p0][0], points[p0][1]);
+            builder.pd(points[p1][0], points[p1][1]);
+            builder.pd(points[p2][0], points[p2][1]);
+            builder.pd(points[p0][0], points[p0][1]);
+        }
 
-          // maybe draw some circles?
-
-          commands.push("PU")
-          commands.push("SP0")
-          commands.push("PG")
-          this.hpgl = commands.join(";\r\n");
-          app.$nextTick(() => { this.$refs.form.submit(); });
+        builder.pu();
+        builder.sp(0);
+        
+        this.hpgl = builder.get();
+        app.$nextTick(() => { this.$refs.form.submit(); });
       }
     }
   });

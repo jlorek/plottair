@@ -17,6 +17,7 @@ defmodule UiWeb.PageController do
     Plotter.send(hpgl, character_delay)
 
     conn
+    |> put_session(:hpgl, "")
     |> put_flash(:info, "Print job received.")
     |> render("console.html")
   end

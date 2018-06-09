@@ -1,8 +1,4 @@
-<style>
-  canvas { border: 1px solid #ccc; position: relative; margin-top: 10px;}
-</style>
-
-<canvas id="canvas"></canvas>
+<canvas id="canvas" class="preview-canvas"></canvas>
 
 <script>
 
@@ -628,110 +624,8 @@ PU;
 `
 
 var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-ctx.lineJoin = 'round';
-ctx.lineCap = 'round';
+let preview = new HpglPreview(canvas);
+preview.batch(hpgl);
 
-// 1:1.41
-var w = 700;
-var h = w * 1.41;
-
-canvas.style.width = w + 'px';
-canvas.style.height = h + 'px';
-canvas.width = w;
-canvas.height = h;
-
-if (window.devicePixelRatio >= 2) {
-  canvas.width = w * 2;
-  canvas.height = h * 2;
-  ctx.scale(2, 2);
-}
-
-let pX = 0;
-let pY = 0;
-let xMin = 0;
-let xMax = 15370;
-let yMin = 0;
-let yMax = 10602;
-let lines = [];
-
-/*
-# some ranges from
-# https://github.com/tobiastoft/SymbolicDisarray
-# -- PLOTTER --
-# --  front  --
-# 0 - 602 - y - 10602 - ?
-# |
-# 170
-# |
-# x
-# |
-# 15370
-# |
-# ?
-*/
-// canvas has flipped coordinate system
-
-function map (num, in_min, in_max, out_min, out_max) {
-  return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-commands = hpgl2.split(/[\r\n;]+/)
-_.each(commands, (cmd) => {
-  if (cmd.startsWith("PU")) {
-    let params = cmd.match(/(\d+),(\d+)/);
-    if (params != null) {
-      pX = parseInt(params[1]);
-      pY = parseInt(params[2]);
-    }
-  }
-
-  if (cmd.startsWith("PD")) {
-    let params = cmd.match(/(\d+),(\d+)/);
-    if (params != null) {
-      let fromX = map(pX, xMin, xMax, 0, h);
-      let fromY = map(pY, yMin, yMax, 0, w);
-      let toX = map(parseInt(params[1]), xMin, xMax, 0, h);
-      let toY = map(parseInt(params[2]), yMin, yMax, 0, w);
-      lines.push([[fromY, fromX], [toY, toX]]);
-
-      pX = parseInt(params[1]);
-      pY = parseInt(params[2]);
-    }
-  }
-
-  if (cmd.startsWith("SC")) {
-    let params = cmd.match(/(\d+),(\d+),(\d+),(\d+)/);
-    if (params != null) {
-      xMin = parseInt(params[1]);
-      xMax = parseInt(params[2]);
-      yMin = parseInt(params[3]);
-      yMax = parseInt(params[4]);
-    }
-  }
-})
-
-/*function frame() {
-  requestAnimationFrame(frame);
-  draw();
-}*/
-
-//frame();
-
-function draw() {
-  ctx.clearRect(0, 0, w, h);
-  //ctx.strokeStyle = 'rgba(0,0,0,1)';
-  ctx.lineWidth = 0.5;
-  
-  _.each(lines, line => {
-    let from = line[0];
-    let to = line[1];
-    ctx.moveTo(from[0], from[1]);
-    ctx.lineTo(to[0], to[1]);
-  });
-  ctx.stroke();
-}
-
-draw();
 </script>
 

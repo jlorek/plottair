@@ -1,6 +1,6 @@
+<h1>Console</h1>
 
 <div id="app">
-  <h1>Console</h1>
 
   <input id="chat-input" type="text" class="form-control" v-on:keypress="onReturn" v-model="command" placeholder="Send HPGL command"></input>
 
@@ -9,58 +9,58 @@
   </div>
 </div>
 
+<canvas id="canvas" class="preview-canvas"></canvas>
+
 <script language="javascript">
 (function() {
+  let canvas = document.getElementById("canvas");
+  let preview = new HpglPreview(canvas);
 
-let app = new Vue({
-  el: '#app',
-  data: {
-    command: "",
-    hpglCommands: []
-  },
-  methods: {
-    onReturn: function(event) {
-      if (event.keyCode === 13) {
-        channel.push("new_msg", {body: app.command}, 1000)
-          //.receive("ok", (msg) => console.log("created message", msg))
-          //.receive("error", (reasons) => console.log("create failed", reasons))
-          //.receive("timeout", () => console.log("Networking issue..."))
-        app.command = ""
+  let app = new Vue({
+    el: '#app',
+    data: {
+      command: "",
+      hpglCommands: []
+    },
+    methods: {
+      onReturn: function(event) {
+        if (event.keyCode === 13) {
+          channel.push("new_msg", {body: app.command}, 1000)
+            //.receive("ok", (msg) => console.log("created message", msg))
+            //.receive("error", (reasons) => console.log("create failed", reasons))
+            //.receive("timeout", () => console.log("Networking issue..."))
+          app.command = ""
+        }
       }
     }
-  }
-});
+  });
 
-//import {Socket} from "phoenix"
-//import socket from "./socket"
-let socket = new Phoenix.Socket("/socket");
-socket.connect();
+  //import {Socket} from "phoenix"
+  //import socket from "./socket"
+  let socket = new Phoenix.Socket("/socket");
+  socket.connect();
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("room:lobby", {});
+  // Now that you are connected, you can join channels with a topic:
+  let channel = socket.channel("room:lobby", {});
 
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
-  .receive("timeout", () => console.log("Networking issue. Still waiting..."));
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+    .receive("timeout", () => console.log("Networking issue. Still waiting..."));
 
-channel.on("new_msg", payload => {
-  //console.log(app.hpglCommands.length)
+  channel.on("new_msg", payload => {
+    preview.single(payload.body, true);
 
-  app.hpglCommands.push(payload.body);
-  if (app.hpglCommands.length > 1000) {
-      app.hpglCommands.shift();
-  }
+    app.hpglCommands.push(payload.body);
+    if (app.hpglCommands.length > 1000) {
+        app.hpglCommands.shift();
+    }
 
-  app.$nextTick(function(){
-    var log = document.getElementById("log");
-    log.scrollTop = log.scrollHeight - log.clientHeight;
-  })
-});
+    app.$nextTick(function() {
+        var log = document.getElementById("log");
+        log.scrollTop = log.scrollHeight - log.clientHeight;
+      });
+    });
 
-function scrollToBottom(id){
-
-}
-
-})();
+  })();
 </script>

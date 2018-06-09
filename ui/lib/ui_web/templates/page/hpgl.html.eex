@@ -16,13 +16,13 @@
     </div>
 
     <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="Start" />
+      <input type="submit" class="btn btn-primary btn-block" value="Start" />
     </div>
   <% end %>
   <%= form_for @conn, page_path(@conn, :preview_post), fn _ -> %>
     <input type="hidden" name="hpgl" v-model="hpgl">
     <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="Preview" />
+      <input type="submit" class="btn btn-primary btn-block" value="Preview" />
     </div>
   <% end %>
 </div>
@@ -37,7 +37,6 @@ var app = new Vue({
   },
   methods: {
     upload: function(event) {
-      //let files = document.getElementById('file').files;
       let files = event.target.files;
       if (files.length > 0) {
         readContent(files[0]);        
@@ -48,14 +47,13 @@ var app = new Vue({
 
 function readContent(file) {
    let reader = new FileReader();
-   //reader.readAsDataURL(file);
-   reader.readAsText(file, "UTF-8");
    reader.onload = function () {
      console.log(reader.result);
-     app.batch = reader.result;
+     app.hpgl = reader.result;
    };
    reader.onerror = function (error) {
      console.log('Error: ', error);
    };
+   reader.readAsText(file, "UTF-8");
 }
 </script>

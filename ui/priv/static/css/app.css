@@ -4,8 +4,8 @@
   margin-top: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .log-entry {
@@ -17,3 +17,39 @@
 .monospace-font {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.preview-canvas {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  margin-top: 10px;
+  /* border: 1px solid #ccc; */
+  width: 100%;
+  height: 100%;
+}
+
+/* .alert-info {
+  -webkit-animation: fadeOut 2s forwards;
+  animation: fadeOut 2s forwards;
+  -webkit-animation-delay: 5s;
+  animation-delay: 5s;
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+} */
+
