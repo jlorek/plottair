@@ -64,7 +64,7 @@
                 <li><%= link "Triangulation", to: page_path(@conn, :triangulation), class: "nav-link" %></li>
               </ul>
             </li>
-            <%= if Mix.env == :dev do %>
+            <%= if Application.get_env(:ui, UiWeb.Endpoint)[:show_debug] do %>
               <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
             <% end %>
           </ul>

@@ -7,6 +7,7 @@ use Mix.Config
 
 # Configures the endpoint
 config :ui, UiWeb.Endpoint,
+  show_debug: true,
   url: [host: "localhost"],
   secret_key_base: "8KnWDhvLTVtqwJHA5tf6BQ0BFG1O8TSi2A8jJKtTA05eSk6hHpf2+CAfx4/rlcVD",
   render_errors: [view: UiWeb.ErrorView, accepts: ~w(html json)],

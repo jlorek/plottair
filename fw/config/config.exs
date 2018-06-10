@@ -53,6 +53,7 @@ config :nerves_network, :default,
 
 # Phoenix configuration
 config :ui, UiWeb.Endpoint,
+  show_debug: false,
   url: [host: "plottair.local"],
   http: [port: 80],
   secret_key_base: "8KnWDhvLTVtqwJHA5tf6BQ0BFG1O8TSi2A8jJKtTA05eSk6hHpf2+CAfx4/rlcVD",
