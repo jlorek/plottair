@@ -16,6 +16,7 @@ table {
 .header {
   border-bottom: 1px solid #e5e5e5;
 }
+
 .logo {
   width: 235px;
   height: 79px;
@@ -23,8 +24,6 @@ table {
   margin-bottom: 1em;
   background-image: url("/images/plottair.png");
   background-size: 235px 79px;
-  /* background-image: url("/images/phoenix.png");
-    background-size: 519px 71px; */
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -55,6 +54,11 @@ table {
   margin: 35px 0;
 }
 
+/* Space out the masthead */
+.header {
+  margin-bottom: 30px;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   /* Remove the padding we set earlier */
@@ -62,10 +66,6 @@ table {
   .marketing {
     padding-right: 0;
     padding-left: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {

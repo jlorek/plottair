@@ -14,7 +14,28 @@
     <meta property="og:description" content="Plott it like it's 1984">
 
     <title>Plottair</title>
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="<%= static_path(@conn, "/favicon.ico") %>">
+    <link rel="icon" type="image/png" href="<%= static_path(@conn, "/fav/favicon-16x16.png") %>" sizes="16x16" />
+    <link rel="icon" type="image/png" href="<%= static_path(@conn, "/fav/favicon-32x32.png") %>" sizes="32x32" />
+    <link rel="icon" type="image/png" href="<%= static_path(@conn, "/fav/favicon-96x96.png") %>" sizes="96x96" />
+    <link rel="icon" type="image/png" href="<%= static_path(@conn, "/fav/favicon-128.png") %>" sizes="128x128" />
+    <link rel="icon" type="image/png" href="<%= static_path(@conn, "/fav/favicon-196x196.png") %>" sizes="196x196" />
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= static_path(@conn, "/fav/apple-touch-icon-57x57.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%= static_path(@conn, "/fav/apple-touch-icon-114x114.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= static_path(@conn, "/fav/apple-touch-icon-72x72.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="f<%= static_path(@conn, "/fav/apple-touch-icon-144x144.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="<%= static_path(@conn, "/fav/apple-touch-icon-60x60.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="<%= static_path(@conn, "/fav/apple-touch-icon-120x120.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="<%= static_path(@conn, "/fav/apple-touch-icon-76x76.png") %>" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="<%= static_path(@conn, "/fav/apple-touch-icon-152x152.png") %>" />
+    <meta name="application-name" content="&nbsp;"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="<%= static_path(@conn, "/fav/mstile-144x144.png") %>" />
+    <meta name="msapplication-square70x70logo" content="<%= static_path(@conn, "/fav/mstile-70x70.png") %>" />
+    <meta name="msapplication-square150x150logo" content="<%= static_path(@conn, "/fav/mstile-150x150.png") %>" />
+    <meta name="msapplication-wide310x150logo" content="<%= static_path(@conn, "/fav/mstile-310x150.png") %>" />
+    <meta name="msapplication-square310x310logo" content="<%= static_path(@conn, "/fav/mstile-310x310.png") %>" />
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/phoenix.css") %>">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
@@ -32,7 +53,7 @@
   
     <div class="container">
       <header class="header">
-        <nav role="navigation">
+        <nav role="navigation" class="xs-inline-block">
           <ul class="nav nav-pills pull-right">
             <li><%= link "Console", to: page_path(@conn, :console), class: "nav-link" %></li>
             <li><%= link "HPGL", to: page_path(@conn, :hpgl), class: "nav-link" %></li>
@@ -43,10 +64,12 @@
                 <li><%= link "Triangulation", to: page_path(@conn, :triangulation), class: "nav-link" %></li>
               </ul>
             </li>
-            <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
+            <%= if Mix.env == :dev do %>
+              <li><%= link "Debug", to: page_path(@conn, :debug), class: "nav-link" %></li>
+            <% end %>
           </ul>
         </nav>
-        <span class="logo"></span>
+        <span class="logo hidden-xs"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

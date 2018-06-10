@@ -28,6 +28,26 @@
   height: 100%;
 }
 
+.logo-small {
+  width: 79px;
+  height: 79px;
+  display: inline-block;
+  margin-bottom: 1em;
+  background-image: url("/images/plottair-sm.png");
+  background-size: 79px 79px;
+}
+
+@media(max-width:767px) {
+  .xs-inline-block {
+    display: inline-block;
+  }
+
+  body {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
 /* .alert-info {
   -webkit-animation: fadeOut 2s forwards;
   animation: fadeOut 2s forwards;
